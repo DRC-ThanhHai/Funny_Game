@@ -1,0 +1,8 @@
+﻿  Game.c
+D:\Work\Code\Funny_QnA\Game.c(78,12): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Work\Code\Funny_QnA\Game.c(89,20): warning C4047: '=': 'char' differs in levels of indirection from 'void *'
+D:\Work\Code\Funny_QnA\Game.c(128,11): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Work\Code\Funny_QnA\Game.c(171,11): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Work\Code\Funny_QnA\Game.c(182,12): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\Work\Code\Funny_QnA\Game.c(59,7): warning C4101: 'anscheck': unreferenced local variable
+  Funny_QnA.vcxproj -> D:\Work\Code\Funny_QnA\x64\Debug\Funny_QnA.exe
