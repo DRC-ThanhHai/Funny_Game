@@ -6,17 +6,10 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define DEBUG
-
-#ifdef DEBUG
-
-#endif
-
-/* Functions */
+#define DEBUG 1 // 1 ON | 0 OFF
 
 /* Global variables */
 char guess[20];
-bool correct = false;
 int CHECK;
 
 /* Function main */
@@ -44,20 +37,24 @@ int main()
 	/* VARIABLES */
 	int numberOfQuestions = sizeof(questions) / sizeof(questions[0]);
 
-	int mode;
 	int length;
 	int len;
 	int found = 0;
+	int found1 = 0;
 	int count;
 	int wordcount = 1;
-	int point = 100;
+	signed int point = 100;
 	
+	bool correct = false;
 	bool error = false;
+	bool next = true;
 
+	char mode[10];
 	char input[20];
 	input[19] = '\0';
-	char anscheck[15];
+	char temp[20];
 
+	/* Print Instructions */
 	printf("***********************************\n");
 	printf("FUNNY Q&A GAME\n");
 	printf("***********************************\n");
@@ -68,21 +65,47 @@ int main()
 	printf("***********************************\n");
 	printf("\n");
 
+	/* Loop for each Q&A */
 	for (int i = 0; i < numberOfQuestions; i++)
 	{
+		/* Print Question */
 		printf("-----------------------------------------------------------------------\n");
 		printf("%s\n", questions[i]);
 		printf("-----------------------------------------------------------------------\n");
 		printf("\n");
 
+		/* DEBUG MODE to print answer */
+		#if (DEBUG == 1)
+		{
+			printf("%s\n", answers[i]);
+			printf("\n");
+		}
+		#else
+		{
+
+		}
+		#endif
+
+		/* Variables */
 		length = strlen(answers[i]);
 		correct = false;
+		wordcount = 1;
 
+		/* Creat guess array to store input answer */
 		for (int j = 0; j < 15; j++)
 		{
 			if (j < length)
 			{
 				guess[j] = '-';
+				if (answers[i][j] == ' ')
+				{
+					guess[j] = ' ';
+					wordcount = wordcount + 1;
+				}
+				else
+				{
+					wordcount = wordcount + 0;
+				}
 			}
 			else
 			{
@@ -90,8 +113,21 @@ int main()
 			}
 		}
 
-		while (correct == false)
-		{
+		/* Loop for check if answer is correct and continue to game */
+		while (correct == false && next == true)
+		{			
+			/* Check point */
+			if (point <= 0)
+			{
+				printf("YOU ARE LOSE.\n");
+				next = false;
+				break;
+			}
+			else
+			{
+
+			}
+			
 			/* Print anser */
 			if (wordcount == 1)
 			{
@@ -107,20 +143,34 @@ int main()
 			/* Chose Mode */
 			printf("Please choose MODE you want to play\n");
 			printf("Input 1 for MODE 1 or 2 for MODE 2: ");
-			CHECK = scanf("%d", &mode);
-			CHECK = getchar();
+			CHECK = scanf("%s", &mode);
+			len = strlen(mode);
+			printf("\n");
 
-			while (mode != 1 && mode != 2)
+			/* Loop for check MODE input */
+			while (len > 1 || (mode[0] != '1' && mode[0] != '2'))
 			{
 				printf("\nERROR! Please type the number 1 or 2 ONLY\n");
 				printf("Input 1 for MODE 1 or 2 for MODE 2: ");
-				CHECK = scanf("%d", &mode);
-				CHECK = getchar();
+				CHECK = scanf("%s", &mode);
+				len = strlen(mode);
+				printf("\n");
 			}
-			//printf("%s\n", answers[i]);
+
+			/* DEBUG MODE */
+			#if (DEBUG == 1)
+			{
+				printf("%s\n", answers[i]);
+				printf("\n");
+			}
+			#else
+			{
+
+			}
+			#endif
 
 			/*  MODE 1 */
-			if (mode == 1)
+			if (mode[0] == '1')
 			{
 				/* Check input letter for MODE 1 */
 				printf("Please input a letter: ");
@@ -128,6 +178,7 @@ int main()
 				len = strlen(input);
 				//printf("%d\n", len);
 
+				/* Loop check 1 letter */
 				while (input[0] < 'A' || input[0] > 'Z' || len > 1)
 				{
 					printf("\nERROR! Please input a letter AGAIN: ");
@@ -140,6 +191,7 @@ int main()
 					if (answers[i][k] == input[0])
 					{
 						found = found + 1;
+						found1 = found1 + 1;
 						guess[k] = answers[i][k];
 					}
 					else
@@ -162,23 +214,55 @@ int main()
 					printf("\nNOT CORRECT! There is %d \"%c\": %s. Player point = %d\n", found, input[0], guess, point);
 					printf("\n");
 				}
+
+				/* Check full answer in MODE 1 */
+				printf("||%d||\n", found1);
+				if (wordcount > 1)
+				{
+					if (found1 == (length-(wordcount-1)))
+					{
+						printf("\nCORRECT! Answer is %s.\n", guess);
+						printf("YOU ARE THE WINNER WITH %d POINTS\n", point);
+						printf("\n");
+						found1 = 0;
+						correct = true;
+					}
+				}
+				else
+				{
+					if (found1 == length)
+					{
+						printf("\nCORRECT! Answer is %s.\n", guess);
+						printf("YOU ARE THE WINNER WITH %d POINTS\n", point);
+						printf("\n");
+						found1 = 0;
+						correct = true;
+					}
+					else
+					{
+
+					}
+				}
 			}
 			else /* MODE 2 */
 			{
 				/* Check input answer for MODE 2 */
 				printf("Please input full answer: ");
-				CHECK = scanf("%s", &input);
+				CHECK = scanf("%*[\n]");
+				fgets(input, length+1, stdin);
 				len = strlen(input);
 				if (len != length)
 				{
 					error = true;
 				}
 
+				/* Loop for check input full answer */
 				while (error == true)
 				{
 					count = 0;
 					printf("\nERROR! Please input full answer AGAIN: ");
-					CHECK = scanf("%s", &input);
+					CHECK = scanf("%*[\n]");
+					fgets(input, length+1, stdin);
 					len = strlen(input);
 					if (len != length)
 					{
@@ -188,7 +272,7 @@ int main()
 					{
 						for (int l = 0; l < len; l++)
 						{
-							if (input[l] < 'A' || input[l] > 'Z')
+							if ((input[l] < 'A' || input[l] > 'Z') && !(input[1] == ' '))
 							{
 								count = count + 1;
 								// printf("\n%d\n", count);
@@ -214,10 +298,10 @@ int main()
 				/* Check if answer is correct in MODE 2 */
 				for (int m = 0; m < length; m++)
 				{
-					if (answers[i][m] == input[m])
+					if (input[m] == answers[i][m])
 					{
 						found = found + 1;
-						guess[m] = answers[i][m];
+						found1 = 0;
 					}
 					else
 					{
@@ -228,20 +312,68 @@ int main()
 				/* Calc point after check */
 				if (found == length)
 				{
+					strcpy(guess, answers[i]);
 					printf("\nCORRECT! Answer is %s.\n", guess);
+					printf("\n");
 					printf("YOU ARE THE WINNER WITH %d POINTS\n", point);
 					printf("\n");
 					found = 0;
-					break;
+					correct = true;
 				}
 				else
 				{
 					point = point - 20;
-					printf("\nNOT CORRECT! There is %d \"%c\": %s. Player point = %d\n", found, input[0], guess, point);
+					printf("\nNOT CORRECT! The answer is %s. Player point = %d\n", guess, point);
 					printf("\n");
+					found = 0;
 				}
 			}
-			correct = true;
+
+			/* Check if player want to continue or not */
+			if (correct == true)
+			{
+				if (i < numberOfQuestions - 1)
+				{
+					printf("Do you want to play next question? (Y/N): ");
+					CHECK = scanf("%s", &input);
+					CHECK = getchar();
+					printf("\n");
+					if (input[0] == 'Y')
+					{
+						correct = false;
+						next = true;
+						break;
+					}
+					else if (input[0] == 'N')
+					{
+						next = false;
+						break;
+					}
+					else
+					{
+
+					}
+				}
+				else
+				{
+					next = false;
+				}
+			}
+			else
+			{
+				
+			}
+		}
+
+		/* Check if player want to continue or not */
+		if (next == false)
+		{
+			printf("THANK YOU FOR PLAYING GAME!\n");
+			break;
+		}
+		else
+		{
+
 		}
 	}
 }
