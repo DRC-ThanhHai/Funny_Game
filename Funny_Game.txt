@@ -216,7 +216,7 @@ int main()
 				}
 
 				/* Check full answer in MODE 1 */
-				// printf("||%d||\n", found1);
+				printf("||%d||\n", found1);
 				if (wordcount > 1)
 				{
 					if (found1 == (length-(wordcount-1)))
@@ -351,14 +351,7 @@ int main()
 					}
 					else
 					{
-						while (strlen(input) > 1 || (input[0] != 'Y' && input[0] != 'N'))
-						{
-							printf("ERROR! Please only choose Y or N ONLY.\n");
-							printf("Do you want to play next question? (Y/N): ");
-							CHECK = scanf("%s", &input);
-							CHECK = getchar();
-							printf("\n");
-						}
+
 					}
 				}
 				else
