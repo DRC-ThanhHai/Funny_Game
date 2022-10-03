@@ -113,7 +113,7 @@ int main()
 			}
 		}
 
-		/* Loop for check if answer is correct and continue to game */
+		/* Loop to check if answer is correct and continue to game */
 		while (correct == false && next == true)
 		{			
 			/* Check point */
@@ -147,7 +147,7 @@ int main()
 			len = strlen(mode);
 			printf("\n");
 
-			/* Loop for check MODE input */
+			/* Loop to check MODE input */
 			while (len > 1 || (mode[0] != '1' && mode[0] != '2'))
 			{
 				printf("\nERROR! Please type the number 1 or 2 ONLY\n");
@@ -178,7 +178,7 @@ int main()
 				len = strlen(input);
 				//printf("%d\n", len);
 
-				/* Loop check 1 letter */
+				/* Loop to check 1 letter */
 				while (input[0] < 'A' || input[0] > 'Z' || len > 1)
 				{
 					printf("\nERROR! Please input a letter AGAIN: ");
@@ -256,7 +256,7 @@ int main()
 					error = true;
 				}
 
-				/* Loop for check input full answer */
+				/* Loop to check input full answer */
 				while (error == true)
 				{
 					count = 0;
